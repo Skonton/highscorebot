@@ -1,12 +1,26 @@
 import discord
+import os
 from discord.ext import commands
 
 command_prefix = '!!'
-bot = commands.Bot(command_prefix=command_prefix)
+hsbot = commands.Bot(command_prefix=command_prefix)
+
+# Reads the token from file
+def read_token():
+    with open("token.txt") as token:
+        line = token.readlines()
+        return line[0].strip()
 
 
-@bot.event
+TOKEN = read_token()
+
+@hsbot.event
 async def on_ready():
     print("Bot is ready!")
 
-bot.run('NzA4NzA4MzYyMDM1OTIwOTE3.Xrbm7Q.kQpmDP_rzUWKlmup1Z5bkPeXN4M')
+# get all the cogs
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        hsbot.load_extension(f'cogs.{filename[:-3]}')
+
+hsbot.run(TOKEN)
