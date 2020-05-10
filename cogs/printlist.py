@@ -10,14 +10,21 @@ class Printlist(commands.Cog):
         self.hsbot = hsbot
 
     @commands.command()
-    async def printlist(self, ctx, *args):
-        await ctx.send(':D')
+    async def printList(self, ctx):
+        cnx = mysql.connector.connect(user='x', password='x',
+                                      host='x',
+                                      database='highschorebot')
+        cursor = cnx.cursor()
 
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed = discord.Embed(title='', description=f'Tarkistathan, että on oikea muoto :) Opettele kirjottamaan!')
-            await ctx.send(embed=embed)
+        query = ("SELECT PELI, PELAAJAMAARA, PISTEMAARA, PELAAJA FROM highscores "
+                 "ORDER BY PISTEMAARA DESC LIMIT 3")
+
+        cursor.execute(query)
+        results = cursor.fetchall()
+
+        for r in results:
+            print(r)
+            await ctx.send(r)
 
 def setup(hsbot):
     hsbot.add_cog(Printlist(hsbot))
