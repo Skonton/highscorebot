@@ -19,25 +19,35 @@ class Listadd(commands.Cog):
 
         if text == '':
             await ctx.send(content='You need to specify the text!')
-            pass
+            return
+
+        peli = splitted_text[0].strip()
+        pelaajaMaara = splitted_text[1].strip()
+        pisteMaara = splitted_text[2].strip()
+        pelaaja = splitted_text[3].strip()
+
         if len(args) != 4:
-            await ctx.send(content='väärä määrä')
+            embed = discord.Embed(title='', description='väärä määrä')
+            await ctx.send(embed=embed)
+            pass
+        elif (not pelaajaMaara.isnumeric()) or (not pisteMaara.isnumeric()):
+            await ctx.send("Muodon pitää olla peli, pelaajamäärä, pisteet, nimimerkki")
             pass
         else:
             try:
-                cnx = mysql.connector.connect(user='x', password='x',
-                                              host='z',
-                                              database='highschorebot')
+                cnx = mysql.connector.connect(user='Skonton', password='KirsikkaPommi500',
+                                              host='127.0.0.1',
+                                              database='highscorebot')
                 cursor = cnx.cursor()
 
                 add_score = ("INSERT INTO highscores "
                              "(PELI, PELAAJAMAARA, PISTEMAARA, PELAAJA) "
                              "VALUES (%s, %s, %s, %s)")
 
-                peli = splitted_text[0].strip()
+                # peli = splitted_text[0].strip()
                 pelaajaMaara = int(splitted_text[1])
                 pisteMaara = int(splitted_text[2])
-                pelaaja = splitted_text[3].strip()
+                # pelaaja = splitted_text[3].strip()
                 score_data = (peli, pelaajaMaara, pisteMaara, pelaaja)
 
                 cursor.execute(add_score, score_data)

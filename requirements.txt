@@ -7,6 +7,9 @@ idna==2.9
 multidict==4.7.5
 mysql==0.0.2
 mysql-connector==2.2.9
+mysql-connector-python==8.0.20
 mysqlclient==1.4.6
+protobuf==3.11.3
+six==1.14.0
 websockets==8.1
 yarl==1.4.2
